@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+package arpa.v1;
+
+import "rbt/v1alpha1/options.proto";
+
+////////////////////////////////////////////////////////////////////////
+
+enum Status {
+  NOT_STARTED = 0;
+  IN_PROGRESS = 1;
+  FAILED = 2;
+  COMPLETED = 3;
+}
+
+message Worker {
+  option (rbt.v1alpha1.state) = {
+  };
+  string task_description = 1;
+  Status status = 2;
+}
+
+service WorkerMethods {
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (rbt.v1alpha1.method).transaction = {
+    };
+  }
+
+  rpc Start(StartRequest) returns (StartResponse) {
+    option (rbt.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc Status(StatusRequest) returns (StatusResponse) {
+    option (rbt.v1alpha1.method).reader = {
+    };
+  }
+
+  rpc Run(RunRequest) returns (RunResponse) {
+    option (rbt.v1alpha1.method).workflow = {
+    };
+  }
+
+  rpc Complete(CompleteRequest) returns (CompleteResponse) {
+    option (rbt.v1alpha1.method).transaction = {
+    };
+  }
+}
+
+message CreateRequest {
+  string task_description = 1;
+  int64 start_delay_milliseconds = 2;
+}
+message CreateResponse {}
+
+message StartRequest {}
+message StartResponse {}
+
+message StatusRequest {}
+message StatusResponse {
+  string task_description = 1;
+  Status status = 2;
+}
+
+message RunRequest {}
+message RunResponse {}
+
+message CompleteRequest {}
+message CompleteResponse {}
+
+////////////////////
+
+message Workers {
+  option (rbt.v1alpha1.state) = {
+  };
+  repeated string worker_ids = 1;
+  bool frozen = 2;
+}
+
+service WorkersMethods {
+  rpc Initialize(InitializeRequest) returns (InitializeResponse) {
+    option (rbt.v1alpha1.method).writer = {
+      constructor: {},
+    };
+  }
+
+  rpc Add(AddRequest) returns (AddResponse) {
+    option (rbt.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc Remove(RemoveRequest) returns (RemoveResponse) {
+    option (rbt.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc List(ListRequest) returns (ListResponse) {
+    option (rbt.v1alpha1.method).reader = {
+    };
+  }
+
+  // Start creating some workers for demo purposes.
+  rpc Demo(DemoRequest) returns (DemoResponse) {
+    option (rbt.v1alpha1.method).workflow = {
+    };
+  }
+
+  // Freeze the creation of demo workers.
+  rpc Freeze(FreezeRequest) returns (FreezeResponse) {
+    option (rbt.v1alpha1.method).writer = {
+    };
+  }
+
+  rpc IsFrozen(IsFrozenRequest) returns (IsFrozenResponse) {
+    option (rbt.v1alpha1.method).reader = {
+    };
+  }
+}
+
+message InitializeRequest {}
+message InitializeResponse {}
+
+message AddRequest {
+  string worker_id = 1;
+}
+message AddResponse {}
+
+message RemoveRequest {
+  string worker_id = 1;
+}
+message RemoveResponse {}
+
+message ListRequest {}
+message ListResponse {
+  message WorkerInfo {
+    string worker_id = 1;
+    string task_description = 2;
+    Status status = 3;
+  }
+  repeated WorkerInfo workers = 1;
+}
+
+message DemoRequest {}
+message DemoResponse {}
+
+message FreezeRequest {
+  bool frozen = 1;
+}
+message FreezeResponse {}
+
+message IsFrozenRequest {}
+message IsFrozenResponse {
+  bool frozen = 1;
+}

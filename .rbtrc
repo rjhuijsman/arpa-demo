@@ -40,14 +40,17 @@ dev run --watch=backend/src/**/*.py
 dev run --python
 
 # Set the application name for commands that require it.
-cloud up --name=hello
-cloud down --name=hello
-dev expunge --name=hello
-dev run --name=hello
-serve run --name=hello
+cloud up --name=workers-demo
+cloud down --name=workers-demo
+dev expunge --name=workers-demo
+dev run --name=workers-demo
+serve run --name=workers-demo
 
 # Run the application!
 dev run --application=backend/src/main.py
+
+# Don't do effect validation during a demo, it produces a bit more log spam than is attractive.
+dev run --effect-validation=disabled
 
 # Tell `rbt serve` that this is a Python application.
 serve run --python

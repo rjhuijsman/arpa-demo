@@ -44,4 +44,15 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           runCmd: |
-            .tests/test.sh
+            # Set up our Python VirtualEnv.
+            rye sync --no-lock
+            source ./.venv/bin/activate
+
+            # Generate our libraries.
+            rbt protoc
+
+            # Check our types.
+            mypy backend/
+
+            # Run our unit tests.
+            pytest backend/

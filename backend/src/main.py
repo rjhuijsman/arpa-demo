@@ -1,30 +1,28 @@
 import asyncio
 import logging
-from hello.v1.hello_rbt import Hello
-from hello_servicer import HelloServicer
+
+from arpa.v1.workers_rbt import Worker, Workers
 from reboot.aio.applications import Application
 from reboot.aio.external import ExternalContext
+from servicers import WORKERS_INDEX_ID, WorkerServicer, WorkersServicer
 
 logging.basicConfig(level=logging.INFO)
 
-EXAMPLE_STATE_MACHINE_ID = 'reboot-hello'
-
 
 async def initialize(context: ExternalContext):
-    hello = Hello.lookup(EXAMPLE_STATE_MACHINE_ID)
+    # Initialize the `Workers` index that we'll use to keep track of all of our workers.
+    workers, _, = await Workers.construct(
+        id=WORKERS_INDEX_ID).idempotently('initialize').Initialize(context)
 
-    # Implicitly construct state machine upon first write.
-    await hello.idempotently().Send(
-        context,
-        message="Hello, World!",
-    )
+    logging.info('👋 Our Workers are ready to go! 👋')
 
-    logging.info('👋 Hello, World? Hello, Reboot! 👋')
+    # Start the demo worker generator.
+    await workers.idempotently('demo').schedule().Demo(context)
 
 
 async def main():
     await Application(
-        servicers=[HelloServicer],
+        servicers=[WorkerServicer, WorkersServicer],
         initialize=initialize,
     ).run()
 
