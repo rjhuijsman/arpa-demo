@@ -1,0 +1,100 @@
+.table-container {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 800px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.workers-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-size: 14px; /* Adjust the font size of the entire table */
+}
+
+.workers-table th,
+.workers-table td {
+  text-align: left;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  vertical-align: middle; /* Vertically align content in table cells */
+}
+
+.workers-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.workers-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.workers-table tr:hover {
+  background-color: #ddd;
+}
+
+.workers-table tr {
+  height: 55px; /* Set a fixed row height */
+}
+
+.workers-table th:last-child, .workers-table td:last-child {
+  width: 130px; /* Fixed width for the "Actions" column */
+  text-align: center; /* Center the content of the "Actions" column */
+}
+
+.complete-btn {
+  width: 120px; /* Fixed width for the button */
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center; /* Center the text */
+  transition: background-color 0.3s;
+}
+
+.complete-btn:hover {
+  background-color: #45a049;
+}
+
+.complete-btn:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.complete-btn:active {
+  background-color: #388e3c;
+}
+
+.freeze-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.freeze-btn:hover {
+  background-color: #e64a19;
+}
+
+.freeze-btn:active {
+  background-color: #d84315;
+}
